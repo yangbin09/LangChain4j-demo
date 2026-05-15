@@ -1,7 +1,9 @@
 package com.example.langchain4jstudy.config;
 
+import com.example.langchain4jstudy.ai.Assistant;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.service.AiServices;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,13 @@ public class LangChain4jConfig {
                 .timeout(Duration.ofSeconds(60))
                 .logRequests(true)
                 .logResponses(true)
+                .build();
+    }
+
+    @Bean
+    public Assistant assistant(ChatModel chatModel) {
+        return AiServices.builder(Assistant.class)
+                .chatModel(chatModel)
                 .build();
     }
 }
