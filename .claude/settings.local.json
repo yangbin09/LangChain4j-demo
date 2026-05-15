@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(mvn spring-boot:run)",
+      "Bash(where mvn *)",
+      "Read(//c/Program Files/**)",
+      "Read(//opt/**)",
+      "Bash(find /c -name \"mvn.cmd\" -type f)",
+      "WebFetch(domain:platform.minimaxi.com)",
+      "mcp__plugin_ecc_exa__web_search_exa"
+    ]
+  }
+}
