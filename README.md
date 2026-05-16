@@ -23,24 +23,30 @@ src/main/java/com/example/langchain4jstudy
 ├── ai/
 │   ├── Assistant.java                  # AI 助手（带系统提示词）
 │   ├── StudyPlanAssistant.java         # 学习计划助手
-│   └── ToolAssistant.java              # 工具增强助手（Tool Calling）
+│   ├── ToolAssistant.java              # 工具增强助手（Tool Calling）
+│   └── MemoryAssistant.java            # 记忆增强助手（多轮对话）
 ├── config/
 │   └── LangChain4jConfig.java          # LangChain4j 配置
 ├── controller/
 │   ├── ChatController.java             # 基础对话接口 /chat
 │   ├── AssistantController.java        # AI 助手接口 /assistant/chat
 │   ├── StudyPlanController.java        # 学习计划接口 /study-plan
-│   └── ToolAssistantController.java    # 工具增强助手接口 /tool-assistant/chat
+│   ├── ToolAssistantController.java    # 工具增强助手接口 /tool-assistant/chat
+│   └── MemoryAssistantController.java  # 记忆增强助手接口 /memory-assistant
 ├── model/
 │   ├── request/                        # 请求模型
 │   │   ├── StudyPlanRequest.java       # 学习计划请求
-│   │   └── ToolChatRequest.java        # 工具对话请求
+│   │   ├── ToolChatRequest.java         # 工具对话请求
+│   │   └── MemoryChatRequest.java      # 记忆对话请求
 │   ├── response/                      # 响应模型
 │   │   ├── StudyPlanResponse.java      # 学习计划响应
-│   │   └── LearningProgressResponse.java # 学习进度响应
+│   │   ├── LearningProgressResponse.java # 学习进度响应
+│   │   └── MemoryChatResponse.java     # 记忆对话响应
 │   ├── StudyPlanDayItem.java           # 每日学习项
 │   └── enums/
 │       └── StudyPlanLevelEnum.java     # 学习难度枚举
+├── service/
+│   └── ChatMemorySessionService.java   # 对话记忆会话管理
 └── tools/                              # 工具类
     ├── DateTimeTool.java               # 日期时间工具
     ├── LearningProgressTool.java       # 学习进度工具
@@ -166,6 +172,39 @@ AI 助手接口，带系统提示词约束，适合技术问答场景。
 - `LearningProgressTool` - 获取学习进度信息
 - `TechTermTool` - 查询技术术语解释
 
+### POST /memory-assistant/chat
+
+记忆增强助手接口，支持多轮对话，AI 会记住当前会话的上下文。
+
+**请求：**
+```json
+{
+  "memoryId": "user-001",
+  "message": "我叫张三"
+}
+```
+
+**响应：**
+```json
+{
+  "memoryId": "user-001",
+  "answer": "好的，张三，我记住了。有什么可以帮助你的吗？"
+}
+```
+
+### DELETE /memory-assistant/{memoryId}
+
+清空指定会话的记忆。
+
+**响应：**
+```json
+{
+  "memoryId": "user-001",
+  "cleared": true,
+  "activeMemoryCount": 5
+}
+```
+
 ## 分支规范
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -178,6 +217,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 | 第二章 | `tutorial/2026-05-15-chapter2` | 添加 AI 助手接口，支持系统提示词 |
 | 第三章 | `tutorial/2026-05-16-chapter3` | 添加学习计划助手接口，生成个性化学习计划 |
 | 第四章 | `tutorial/2026-05-16-chapter4` | 添加 Tool Calling 工具调用功能 |
+| 第五章 | `tutorial/2026-05-16-chapter5` | 添加 Chat Memory 多轮对话功能 |
 
 ## 项目地址
 
