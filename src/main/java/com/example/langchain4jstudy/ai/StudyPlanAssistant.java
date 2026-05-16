@@ -1,6 +1,7 @@
 package com.example.langchain4jstudy.ai;
 
 import com.example.langchain4jstudy.model.StudyPlanDayItem;
+import com.example.langchain4jstudy.model.StudyPlanResponse;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 
@@ -22,5 +23,5 @@ public interface StudyPlanAssistant {
             7. 内容必须适合 Java / Spring Boot 工程师
             8. 回答必须使用中文
             """)
-    StudyPlanDayItem generate(@UserMessage String userGoal);
+    StudyPlanResponse generate(@UserMessage String userGoal);
 }
