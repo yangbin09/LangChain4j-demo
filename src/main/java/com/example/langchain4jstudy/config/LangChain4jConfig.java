@@ -1,8 +1,10 @@
 package com.example.langchain4jstudy.config;
 
 import com.example.langchain4jstudy.ai.Assistant;
+import com.example.langchain4jstudy.ai.MemoryAssistant;
 import com.example.langchain4jstudy.ai.StudyPlanAssistant;
 import com.example.langchain4jstudy.ai.ToolAssistant;
+import com.example.langchain4jstudy.service.ChatMemorySessionService;
 import com.example.langchain4jstudy.tools.DateTimeTool;
 import com.example.langchain4jstudy.tools.LearningProgressTool;
 import com.example.langchain4jstudy.tools.TechTermTool;
@@ -110,6 +112,23 @@ public class LangChain4jConfig {
         return AiServices.builder(ToolAssistant.class)
                 .chatModel(chatModel)
                 .tools(dateTimeTool, learningProgressTool, techTermTool)
+                .build();
+    }
+
+    /**
+     * 注册带记忆能力的助手。
+     *
+     * <p>通过 chatMemoryProvider 按 memoryId 获取不同会话的 ChatMemory。</p>
+     */
+    @Bean
+    public MemoryAssistant memoryAssistant(ChatModel chatModel,
+                                           ChatMemorySessionService chatMemorySessionService) {
+        log.info("注册带记忆能力的助手");
+        return AiServices.builder(MemoryAssistant.class)
+                .chatModel(chatModel)
+                .chatMemoryProvider(memoryId ->
+                        chatMemorySessionService.getOrCreate(String.valueOf(memoryId))
+                )
                 .build();
     }
 }
