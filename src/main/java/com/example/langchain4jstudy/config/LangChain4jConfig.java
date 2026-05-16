@@ -1,6 +1,7 @@
 package com.example.langchain4jstudy.config;
 
 import com.example.langchain4jstudy.ai.Assistant;
+import com.example.langchain4jstudy.ai.StudyPlanAssistant;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.service.AiServices;
@@ -33,6 +34,13 @@ public class LangChain4jConfig {
     @Bean
     public Assistant assistant(ChatModel chatModel) {
         return AiServices.builder(Assistant.class)
+                .chatModel(chatModel)
+                .build();
+    }
+
+    @Bean
+    public StudyPlanAssistant studyPlanAssistant(ChatModel chatModel) {
+        return AiServices.builder(StudyPlanAssistant.class)
                 .chatModel(chatModel)
                 .build();
     }
