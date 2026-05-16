@@ -1,18 +1,33 @@
 package com.example.langchain4jstudy.ai;
 
-import com.example.langchain4jstudy.model.StudyPlanDayItem;
-import com.example.langchain4jstudy.model.StudyPlanResponse;
+import com.example.langchain4jstudy.model.response.StudyPlanResponse;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 
+/**
+ * 学习计划助手接口。
+ *
+ * <p>用于根据用户的学习目标，生成结构化的学习计划。</p>
+ * <p>该接口返回 Java 对象而非普通文本，需要大模型按照指定格式输出。</p>
+ *
+ * @author yang xiao
+ */
 public interface StudyPlanAssistant {
 
+    /**
+     * 根据目标生成学习计划。
+     *
+     * <p>接收用户的学习目标，返回结构化的学习计划。</p>
+     *
+     * @param userGoal 用户的学习目标，例如"我想用7天入门LangChain4j"
+     * @return 结构化的学习计划，包含每日主题、任务、产出物和验收标准
+     */
     @SystemMessage("""
             你是一个非常严格的技术学习教练，擅长给 Java 工程师制定实战学习计划。
-            
+
             你的任务：
             根据用户目标，生成一个结构化学习计划。
-            
+
             规则：
             1. 必须偏实战，不要堆理论
             2. 每一天都必须有明确任务

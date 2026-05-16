@@ -1,5 +1,6 @@
-package com.example.langchain4jstudy.model;
+package com.example.langchain4jstudy.model.response;
 
+import com.example.langchain4jstudy.model.StudyPlanDayItem;
 import com.example.langchain4jstudy.model.enums.StudyPlanLevelEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
