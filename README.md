@@ -21,12 +21,20 @@ Spring Boot 3.x 集成 LangChain4j，对接国产大模型（DeepSeek、MiniMax 
 src/main/java/com/example/langchain4jstudy
 ├── LangChain4jStudyApplication.java    # 启动类
 ├── ai/
-│   └── Assistant.java                  # AI 助手接口（带系统提示词）
+│   ├── Assistant.java                  # AI 助手（带系统提示词）
+│   └── StudyPlanAssistant.java         # 学习计划助手
 ├── config/
 │   └── LangChain4jConfig.java          # LangChain4j 配置
-└── controller/
-    ├── ChatController.java             # 基础对话接口 /chat
-    └── AssistantController.java        # AI 助手接口 /assistant/chat
+├── controller/
+│   ├── ChatController.java             # 基础对话接口 /chat
+│   ├── AssistantController.java        # AI 助手接口 /assistant/chat
+│   └── StudyPlanController.java       # 学习计划接口 /study-plan
+└── model/
+    ├── StudyPlanRequest.java           # 学习计划请求
+    ├── StudyPlanResponse.java          # 学习计划响应
+    ├── StudyPlanDayItem.java           # 每日学习项
+    └── enums/
+        └── StudyPlanLevelEnum.java     # 学习难度枚举
 
 src/main/resources/
 └── application.yml                     # 配置文件
@@ -95,6 +103,40 @@ AI 助手接口，带系统提示词约束，适合技术问答场景。
 {"answer": "Spring Boot 是一个用于快速构建 Spring 应用的框架..."}
 ```
 
+### POST /study-plan
+
+学习计划助手接口，根据主题、难度和天数生成个性化学习计划。
+
+**请求：**
+```json
+{
+  "subject": "Java",
+  "level": "BEGINNER",
+  "days": 7
+}
+```
+
+**响应：**
+```json
+{
+  "subject": "Java",
+  "level": "BEGINNER",
+  "days": 7,
+  "plan": [
+    {
+      "day": 1,
+      "content": "Java 基础语法和环境搭建",
+      "description": "学习 Java 基本语法、数据类型、变量声明"
+    }
+  ]
+}
+```
+
+**难度等级：**
+- `BEGINNER` - 初级
+- `INTERMEDIATE` - 中级
+- `ADVANCED` - 高级
+
 ## 分支规范
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -105,6 +147,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 |------|------|------|
 | 第一章 | `tutorial/2026-05-15-chapter1` | Spring Boot 接入 DeepSeek，跑通聊天接口 |
 | 第二章 | `tutorial/2026-05-15-chapter2` | 添加 AI 助手接口，支持系统提示词 |
+| 第三章 | `tutorial/2026-05-16-chapter3` | 添加学习计划助手接口，生成个性化学习计划 |
 
 ## 项目地址
 
