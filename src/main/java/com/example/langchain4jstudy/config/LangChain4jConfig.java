@@ -1,9 +1,6 @@
 package com.example.langchain4jstudy.config;
 
-import com.example.langchain4jstudy.ai.Assistant;
-import com.example.langchain4jstudy.ai.MemoryAssistant;
-import com.example.langchain4jstudy.ai.StudyPlanAssistant;
-import com.example.langchain4jstudy.ai.ToolAssistant;
+import com.example.langchain4jstudy.ai.*;
 import com.example.langchain4jstudy.service.ChatMemorySessionService;
 import com.example.langchain4jstudy.tools.DateTimeTool;
 import com.example.langchain4jstudy.tools.LearningProgressTool;
@@ -129,6 +126,19 @@ public class LangChain4jConfig {
                 .chatMemoryProvider(memoryId ->
                         chatMemorySessionService.getOrCreate(String.valueOf(memoryId))
                 )
+                .build();
+    }
+
+    /**
+     * 注册 RAG 问答助手。
+     *
+     * @param chatModel 对话模型
+     * @return RAG 问答助手
+     */
+    @Bean
+    public RagAssistant ragAssistant(ChatModel chatModel) {
+        return AiServices.builder(RagAssistant.class)
+                .chatModel(chatModel)
                 .build();
     }
 }
