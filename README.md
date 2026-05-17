@@ -262,6 +262,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 | 第四章 | `tutorial/2026-05-16-chapter4` | 添加 Tool Calling 工具调用功能 |
 | 第五章 | `tutorial/2026-05-16-chapter5` | 添加 Chat Memory 多轮对话功能 |
 | 第六章 | `tutorial/2026-05-17-chapter6` | RAG 本地知识库问答，验证答案是否真正来自文档 |
+| 第七章 | `tutorial/2026-05-17-chapter7` | RAG 切片检索优化，关键词精准匹配 |
 
 ## 项目地址
 
