@@ -53,12 +53,12 @@ public class MemoryAssistantController {
     @DeleteMapping("/{memoryId}")
     public Map<String, Object> clear(@PathVariable String memoryId) {
         log.info("收到清空记忆请求，memoryId：{}", memoryId);
-        chatMemorySessionService.clear(memoryId);
+        boolean clear = chatMemorySessionService.clear(memoryId);
         int activeCount = chatMemorySessionService.count();
         log.info("记忆已清空，当前活跃会话数：{}", activeCount);
         return Map.of(
                 "memoryId", memoryId,
-                "cleared", true,
+                "cleared", clear,
                 "activeMemoryCount", activeCount
         );
     }
