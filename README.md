@@ -24,7 +24,8 @@ src/main/java/com/example/langchain4jstudy
 │   ├── Assistant.java                  # AI 助手（带系统提示词）
 │   ├── StudyPlanAssistant.java         # 学习计划助手
 │   ├── ToolAssistant.java              # 工具增强助手（Tool Calling）
-│   └── MemoryAssistant.java            # 记忆增强助手（多轮对话）
+│   ├── MemoryAssistant.java            # 记忆增强助手（多轮对话）
+│   └── RagAssistant.java               # RAG 问答助手
 ├── config/
 │   └── LangChain4jConfig.java          # LangChain4j 配置
 ├── controller/
@@ -32,21 +33,30 @@ src/main/java/com/example/langchain4jstudy
 │   ├── AssistantController.java        # AI 助手接口 /assistant/chat
 │   ├── StudyPlanController.java        # 学习计划接口 /study-plan
 │   ├── ToolAssistantController.java    # 工具增强助手接口 /tool-assistant/chat
-│   └── MemoryAssistantController.java  # 记忆增强助手接口 /memory-assistant
+│   ├── MemoryAssistantController.java  # 记忆增强助手接口 /memory-assistant
+│   └── RagController.java             # RAG 问答接口 /rag/ask
 ├── model/
 │   ├── request/                        # 请求模型
 │   │   ├── StudyPlanRequest.java       # 学习计划请求
 │   │   ├── ToolChatRequest.java         # 工具对话请求
-│   │   └── MemoryChatRequest.java      # 记忆对话请求
+│   │   ├── MemoryChatRequest.java      # 记忆对话请求
+│   │   └── RagAskRequest.java          # RAG 问答请求
 │   ├── response/                      # 响应模型
 │   │   ├── StudyPlanResponse.java      # 学习计划响应
 │   │   ├── LearningProgressResponse.java # 学习进度响应
-│   │   └── MemoryChatResponse.java     # 记忆对话响应
+│   │   ├── MemoryChatResponse.java     # 记忆对话响应
+│   │   ├── RagAskResponse.java        # RAG 问答响应
+│   │   └── RagReferenceItem.java       # RAG 引用来源
+│   ├── dto/                           # 数据传输对象
+│   │   ├── LocalKnowledgeDocument.java # 本地知识文档
+│   │   └── RagRetrievedDocument.java  # RAG 检索命中文档
 │   ├── StudyPlanDayItem.java           # 每日学习项
 │   └── enums/
 │       └── StudyPlanLevelEnum.java     # 学习难度枚举
 ├── service/
-│   └── ChatMemorySessionService.java   # 对话记忆会话管理
+│   ├── ChatMemorySessionService.java   # 对话记忆会话管理
+│   ├── MarkdownDocumentService.java    # Markdown 文档加载
+│   └── SimpleRagRetrievalService.java # 简单 RAG 检索服务
 └── tools/                              # 工具类
     ├── DateTimeTool.java               # 日期时间工具
     ├── LearningProgressTool.java       # 学习进度工具
@@ -205,6 +215,39 @@ AI 助手接口，带系统提示词约束，适合技术问答场景。
 }
 ```
 
+### POST /rag/ask
+
+RAG 本地知识库问答接口，基于本地 Markdown 文档回答问题，并返回引用来源。
+
+**请求：**
+```json
+{
+  "question": "LangChain4j 的 Tool Calling 是什么？"
+}
+```
+
+**响应：**
+```json
+{
+  "answer": "Tool Calling 是 LangChain4j 提供的...",
+  "references": [
+    {
+      "sourceFile": "langchain4j.md",
+      "title": "LangChain4j 基础",
+      "score": 15,
+      "snippet": "Tool Calling 允许大模型调用外部工具..."
+    }
+  ],
+  "hitCount": 1
+}
+```
+
+**功能说明：**
+- 从 `docs/` 目录加载本地 Markdown 文档
+- 检索与问题相关的文档（当前使用关键词匹配）
+- 组装上下文后调用 AI 生成答案
+- 返回答案及引用来源列表
+
 ## 分支规范
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -218,6 +261,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 | 第三章 | `tutorial/2026-05-16-chapter3` | 添加学习计划助手接口，生成个性化学习计划 |
 | 第四章 | `tutorial/2026-05-16-chapter4` | 添加 Tool Calling 工具调用功能 |
 | 第五章 | `tutorial/2026-05-16-chapter5` | 添加 Chat Memory 多轮对话功能 |
+| 第六章 | `tutorial/2026-05-17-chapter6` | RAG 本地知识库问答，验证答案是否真正来自文档 |
 
 ## 项目地址
 
