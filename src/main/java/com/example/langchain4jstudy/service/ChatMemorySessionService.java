@@ -50,16 +50,31 @@ public class ChatMemorySessionService {
      * 清空指定会话记忆。
      *
      * @param memoryId 记忆 ID
+     * @return 是否成功清空
      */
-    public void clear(String memoryId) {
-        log.info("清空对话记忆，memoryId：{}", memoryId);
-        ChatMemory chatMemory = memoryMap.remove(memoryId);
-        if (chatMemory != null) {
-            chatMemory.clear();
-            log.info("对话记忆已清空，memoryId：{}", memoryId);
-        } else {
-            log.warn("未找到对应的对话记忆，memoryId：{}", memoryId);
+    public boolean clear(String memoryId) {
+        String key = normalizeMemoryId(memoryId);
+        log.info("清空对话记忆，memoryId：{}，清空前 keys：{}", key, memoryMap.keySet());
+
+        ChatMemory chatMemory = memoryMap.get(key);
+        if (chatMemory == null) {
+            log.warn("未找到对话记忆，memoryId：{}", key);
+            return false;
         }
+
+        chatMemory.clear();
+        log.info("对话记忆已清空（未从Map移除），memoryId：{}，keys：{}", key, memoryMap.keySet());
+        return true;
+    }
+
+    /**
+     * 标准化 memoryId，去除首尾空格。
+     */
+    private String normalizeMemoryId(String memoryId) {
+        if (memoryId == null || memoryId.trim().isEmpty()) {
+            throw new IllegalArgumentException("memoryId 不能为空");
+        }
+        return memoryId.trim();
     }
 
     /**
